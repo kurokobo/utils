@@ -8,15 +8,17 @@ const (
 	POLUS
 	DLEKS // Skeld backwards
 	AIRSHIP
+	SUBMERGED
 	EMPTYMAP PlayMap = 10
 )
 
 var MapNames = map[PlayMap]string{
-	SKELD:   "Skeld",
-	MIRA:    "Mira",
-	POLUS:   "Polus",
-	DLEKS:   "dlekS",
-	AIRSHIP: "Airship",
+	SKELD:     "Skeld",
+	MIRA:      "Mira",
+	POLUS:     "Polus",
+	DLEKS:     "dlekS",
+	AIRSHIP:   "Airship",
+	SUBMERGED: "Submerged",
 }
 
 var NameToPlayMap = map[string]int32{
@@ -25,5 +27,6 @@ var NameToPlayMap = map[string]int32{
 	"polus":     (int32)(POLUS),
 	"dleks":     (int32)(DLEKS),
 	"airship":   (int32)(AIRSHIP),
+	"submerged": (int32)(SUBMERGED),
 	"NoMap":     -1,
 }

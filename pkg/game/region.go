@@ -6,6 +6,8 @@ const (
 	NA Region = iota
 	AS
 	EU
+	NAE
+	NAW
 )
 
 func (r Region) ToString() string {
@@ -16,6 +18,10 @@ func (r Region) ToString() string {
 		return "Europe"
 	case AS:
 		return "Asia"
+	case NAE:
+		return "NA (East)"
+	case NAW:
+		return "NA (West)"
 	}
 	return "Unknown"
 }
