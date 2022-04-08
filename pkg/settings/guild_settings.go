@@ -1,14 +1,16 @@
 package settings
 
 import (
+	"sync"
+
 	"github.com/automuteus/utils/pkg/game"
 	"github.com/automuteus/utils/pkg/locale"
 	"github.com/bwmarrin/discordgo"
-	"sync"
 )
 
 const DefaultLeaderboardSize = 3
 const DefaultLeaderboardMin = 3
+const DefaultHistorySize = 20
 
 type GuildSettings struct {
 	AdminUserIDs             []string        `json:"adminIDs"`
@@ -19,14 +21,16 @@ type GuildSettings struct {
 	Delays                   game.GameDelays `json:"delays"`
 	DeleteGameSummaryMinutes int             `json:"deleteGameSummary"`
 	lock                     sync.RWMutex
-	UnmuteDeadDuringTasks    bool   `json:"unmuteDeadDuringTasks"`
-	AutoRefresh              bool   `json:"autoRefresh"`
-	MatchSummaryChannelID    string `json:"matchSummaryChannelID"`
-	LeaderboardMention       bool   `json:"leaderboardMention"`
-	LeaderboardSize          int    `json:"leaderboardSize"`
-	LeaderboardMin           int    `json:"leaderboardMin"`
-	MuteSpectator            bool   `json:"muteSpectator"`
-	DisplayRoomCode          string `json:"displayRoomCode"`
+	UnmuteDeadDuringTasks    bool    `json:"unmuteDeadDuringTasks"`
+	AutoRefresh              bool    `json:"autoRefresh"`
+	MatchSummaryChannelID    string  `json:"matchSummaryChannelID"`
+	LeaderboardMention       bool    `json:"leaderboardMention"`
+	LeaderboardSize          int     `json:"leaderboardSize"`
+	LeaderboardMin           int     `json:"leaderboardMin"`
+	MuteSpectator            bool    `json:"muteSpectator"`
+	DisplayRoomCode          string  `json:"displayRoomCode"`
+	HistorySize              int     `json:"historySize"`
+	TimeOffset               float32 `json:"timeOffset"`
 }
 
 func MakeGuildSettings() *GuildSettings {
@@ -46,6 +50,8 @@ func MakeGuildSettings() *GuildSettings {
 		LeaderboardMin:           DefaultLeaderboardMin,
 		MuteSpectator:            false,
 		DisplayRoomCode:          "always",
+		HistorySize:              DefaultHistorySize,
+		TimeOffset:               0,
 		lock:                     sync.RWMutex{},
 	}
 }
@@ -220,4 +226,26 @@ func (gs *GuildSettings) GetDisplayRoomCode() string {
 
 func (gs *GuildSettings) SetDisplayRoomCode(r string) {
 	gs.DisplayRoomCode = r
+}
+
+func (gs *GuildSettings) GetHistorySize() int {
+	if gs.HistorySize > 30 || gs.HistorySize < 1 {
+		return DefaultHistorySize
+	}
+	return gs.HistorySize
+}
+
+func (gs *GuildSettings) SetHistorySize(v int) {
+	gs.HistorySize = v
+}
+
+func (gs *GuildSettings) GetTimeOffset() float32 {
+	if gs.TimeOffset > 14.0 || gs.TimeOffset < -12.0 {
+		return 0
+	}
+	return gs.TimeOffset
+}
+
+func (gs *GuildSettings) SetTimeOffset(v float32) {
+	gs.TimeOffset = v
 }
